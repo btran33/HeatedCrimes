@@ -1,0 +1,26 @@
+body {
+  background-color: #ffebe6;
+}
+h1.title {
+  color:  #ff3300;
+}
+p {
+  color: red;
+}
+
+div.heading{
+  font-size: large;
+  text-align: center;
+}
+
+div.buttons{
+  align: center;
+}
+
+table.officialReport{
+  text-align: right;
+}
+
+h2 {
+  color:  #ff3300;
+}

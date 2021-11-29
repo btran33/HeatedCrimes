@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href={{ url_for('static', filename='styles/styles2.css') }}>
+  <title>Heated Crimes </title>
+</head>
+
+
+<body>
+  <div class="heading">
+  <h1 class="title">Heated Crimes</h1>
+  <h1> {{date_}}</h1>
+</div>
+  <!--
+    This section of the document specifies the table that will
+    be used to display the list of birds and their description
+   -->
+  <div class="User">
+
+    <table>
+      <h2> User Name </h2>
+      <td>{{usr_name}}</td>
+      </tr>
+    </table>
+
+    <table>
+      <h2> User Reports </h2>
+      <tr>
+        <th>Location</th>
+        <th>Crime-Type</th>
+        <th>Description</th>
+        <th>Date</th>
+      </tr>
+      <tbody>
+          {% for item in user_reports %}
+              <tr>
+                <td>{{item.Location}}</td>
+                <td>{{item.Crime_Type}}</td>
+                <td>{{item.Description}}</td>
+                <td>{{item.Date}}</td>
+              </tr>
+          {% endfor %}
+          
+          </tbody>
+    </table>
+</div>
+  <br/>
+
+<div class="officialReport">
+  <table>
+    <h2> Official Crime Reports </h2>
+    <tr>
+      <th>Location</th>
+      <th>Crime-Type</th>
+      <th>Description</th>
+      <th>Date</th>
+    </tr>
+    <tbody>
+        {% for item in items %}
+            <tr>
+                <td>{{item.Location}}</td>
+                <td>{{item.Crime_Type}}</td>
+                <td>{{item.Description}}</td>
+                <td>{{item.Date}}</td>
+            </tr>
+        {% endfor %}
+        
+        </tbody>
+  </table>
+  <a href=load ><button class=grey style="height:37px;width:130px">Load Recent Crimes</button></a></p>
+    </div>
+  <br/>
+
+  <br/>
+    <br/>
+
+  <h2> Report / Search for Crimes</h2>
+
+  <!--
+    This section contains the form, that will be used to hit the
+    `POST /bird` API that we will build in the next section
+   -->
+  <form action="/report-search" method="POST">
+    Location:
+    <input type="text" name="location">
+    <br/> 
+    Crime Type:
+    <input type="text" name="type">
+    <br/>
+    Description:
+    <input type="text" name="description">
+    <br/>
+    Date:
+    <input type="text" name="time">
+    <br/> 
+    Temperature:
+    <input type="text" name="temperature">
+
+    <div class="buttons">
+      <br/>
+        <input type="submit" name = "Report Crimes" value="Report Crimes" size="20">
+      <br/>
+        <input type="submit" name = "Search Similar Crimes" value="Search Similar Crimes">
+    </div>
+  </form>
+
+  {% if report_status and reported%}
+ 
+  <p style="color:green">Report Successful!</p>
+  
+  {% elif not report_status and reported %}
+  <p style="color:red">Report Unuccessful :(</p>
+  
+  {% elif report_status and not reported %}
+  <p style="color:green">Search Successful!</p>
+
+  {% else%}
+  <p> </p>
+  {% endif %}
+
+
+    <br/>
+      <br/>
+
+      <div class="lookupResults">
+        <table>
+          <h2> Crimes Similar to Your Search </h2>
+          <tr>
+            <th>Location</th>
+            <th>Crime-Type</th>
+            <th>Description</th>
+            <th>Date</th>
+          </tr>
+          <tbody>
+              {% for item in searched %}
+                  <tr>
+                      <td>{{item.Location}}</td>
+                      <td>{{item.Crime_Type}}</td>
+                      <td>{{item.Description}}</td>
+                      <td>{{item.Date}}</td>
+                  </tr>
+              {% endfor %}
+              
+              </tbody>
+        </table>
+      </div>
+      <br/>
+    <br/>
+
+    <br/>
+      <br/>
+
+      <div class="lookupResults">
+        <table>
+          <h2> Top 15 Most Frequent Crimes Between a Temperature Range in Fahrenheit </h2>
+          <tr>
+            <th>Crime-Type</th>
+            <th>Frequency</th>
+          </tr>
+          <tbody>
+              {% for item in adv_querry1 %}
+                  <tr>
+                      <td>{{item.Crime_Type}}</td>
+                      <td>{{item.cnt}}</td>
+                  </tr>
+              {% endfor %}
+              
+              </tbody>
+        </table>
+        <form action="/adv_querry1" method="POST">
+          <br/>
+          Temperature Threshold:
+          <input type="text" name="min">
+          <br/> 
+          Temperature Maximum:
+          <input type="text" name="max">
+      
+          <div class="buttons">
+            <br/>
+              <input type="submit" name = "See Results" value="See Results" size="20">
+
+          </div>
+        </form>
+      </div>
+      <br/>
+    <br/>
+
+    <br/>
+      <br/>
+
+      <div class="lookupResults">
+        <table>
+          <h2> Blocks in Chicago Have At Least an X% Successful Arrest Rate for Thefts </h2>
+          <tr>
+            <th>Block</th>
+          </tr>
+          <tbody>
+              {% for item in adv_querry2 %}
+                  <tr>
+                      <td>{{item.Block}}</td>
+                  </tr>
+              {% endfor %}
+              
+              </tbody>
+        </table>
+        <form action="/adv_querry2" method="POST">
+          <br/>
+          Percentage Threshold:
+          <input type="text" name="percent">
+      
+          <div class="buttons">
+            <br/>
+              <input type="submit" name = "See Results" value="See Results" size="20">
+
+          </div>
+        </form>
+      </div>
+      <br/>
+    <br/>
+
+      <h2> Update Username </h2>
+
+      <!--
+        This section contains the form, that will be used to hit the
+        `POST /bird` API that we will build in the next section
+       -->
+       {% if updated and display%}
+ 
+      <p style="color:green">Update Successful!</p>
+      
+      {% elif not updated and display %}
+      <p style="color:red">Update Unuccessful :(</p>
+      
+      {% else %}
+      <p> </p>
+      {% endif %}
+
+      <form action="/usr_name" method="POST">
+        Current Username:
+        <input type="text" name="old_username">
+        <br/>New Username:
+        <input type="text" name="new_username">
+        <div class="buttons">
+        <br/>
+          <input type="submit" name="Update Username" value="Update Username" size="20">
+        <br/>
+
+      </div>
+      </form>
+
+
+      <h2> Delete All User Reports </h2>
+
+      <!--
+        This section contains the form, that will be used to hit the
+        `POST /bird` API that we will build in the next section
+       -->
+       {% if deleted and display%}
+ 
+      <p style="color:green">Delete Successful!</p>
+      
+      {% elif not deleted and display %}
+      <p style="color:red">Delete Unuccessful :(</p>
+      
+      {% else %}
+      <p> </p>
+      {% endif %}
+
+      <form action="/deletion" method="POST">
+        Username:
+        <input type="text" name="username">
+
+        <div class="buttons">
+        <br/>
+          <input type="submit" name="Delete Reports" value="Delete Reports" size="20">
+        <br/>
+
+      </div>
+      </form>
+     
+</body>
+</html>
