@@ -48,6 +48,23 @@ def get_user_reports(user_id, date_) -> dict:
     print(reports)
     return reports
 
+def predict_crime(request):
+    conn = db.connect()
+    pred = ""
+    try:
+        location = request["location"]
+        temperature = request["temperature"]
+
+        result = conn.execute(text(f'''
+                                CALL GetPrediction("{location}", {temperature});
+                               ''')).fetchall()
+    except Exception as e:
+        print("Error is: ", e)
+        conn.close()
+        return False, pred, []
+
+    return False, pred, result
+
 def report_crime(request, id_, date_):
     try:
         conn = db.connect()

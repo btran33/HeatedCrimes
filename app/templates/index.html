@@ -99,6 +99,8 @@
 
     <div class="buttons">
       <br/>
+        <input type="submit" name = "Predict Crimes" value="Predict Crimes">
+      <br/>
         <input type="submit" name = "Report Crimes" value="Report Crimes" size="20">
       <br/>
         <input type="submit" name = "Search Similar Crimes" value="Search Similar Crimes">
@@ -118,7 +120,45 @@
   {% else%}
   <p> </p>
   {% endif %}
+    
+    <br/>
+      <br/>
 
+      <div class="PredictionResults">
+        <table>
+          <h2> Prediction Result </h2>
+          {% if pred == "Likely"%}
+ 
+          <p style="color:red;font-size:40px">Likely</p>
+          
+          {% elif pred == "Probable" %}
+          <p style="color:orange;font-size:40px">Probable</p>
+          
+          {% elif pred == "Unlikely" %}
+          <p style="color:green;font-size:40px">Unlikely</p>
+
+          {% else%}
+          <p> </p>
+          {% endif %}
+
+          <tr>
+            <th>Crime-Type</th>
+            <th>Frequency</th>
+
+          </tr>
+          <tbody>
+              {% for item in prediction %}
+                  <tr>
+                      <td>{{item.Crime_Type}}</td>
+                      <td>{{item.Frequency}}</td>
+                  </tr>
+              {% endfor %}
+              
+              </tbody>
+        </table>
+      </div>
+      <br/>
+    <br/>
 
     <br/>
       <br/>

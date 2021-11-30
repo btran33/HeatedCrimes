@@ -37,7 +37,18 @@ def report_search_function():
     user_reports = db_helper.get_user_reports(user_id,date_)
 
     if request.method == 'POST':
-        if "Report Crimes" in request.form:
+        if "Predict Crimes" in request.form:
+            report_status, pred, prediction = db_helper.predict_crime(request.form)
+            return render_template("index.html", 
+                            usr_name= usr_name,
+                            items=items, 
+                            user_reports=user_reports,
+                            prediction = prediction,
+                            pred = pred,
+                            date_=date_,
+                            reported=False,
+                            report_status=report_status)
+        elif "Report Crimes" in request.form:
             report_status = db_helper.report_crime(request.form,user_id, date_)
             user_reports = db_helper.get_user_reports(user_id,date_)
             return render_template("index.html", 
