@@ -9,6 +9,8 @@ usr_name = db_helper.get_user_name(user_id)
 date_ = date.today()
 user_reports = db_helper.get_user_reports(user_id,date_)
 
+prediction = ("", "", "", "", "", "")
+trend = 2
 items = []
 report = []
 
@@ -18,6 +20,8 @@ def homepage():
     return render_template("index.html", 
                             usr_name = usr_name, 
                             user_reports=user_reports,
+                            prediction=prediction,
+                            trend = trend,
                             date_=date_)
 
 @app.route('/load')
@@ -26,7 +30,8 @@ def background_process():
     user_reports = db_helper.get_user_reports(user_id,date_)
     return render_template("index.html", 
                             usr_name= usr_name,
-                            items=items, 
+                            items=items,
+                            prediction=prediction, 
                             user_reports=user_reports,
                             date_=date_)
 
@@ -38,16 +43,20 @@ def report_search_function():
 
     if request.method == 'POST':
         if "Predict Crimes" in request.form:
-            report_status, pred, prediction = db_helper.predict_crime(request.form)
+            report_status, prediction = db_helper.predict_crime(request.form)
+            trends = db_helper.get_trend(request.form)
+            print(f'trend is: {trends}')
             return render_template("index.html", 
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
                             prediction = prediction,
-                            pred = pred,
+                            trend = trends,
+                            pred = prediction[4],
                             date_=date_,
                             reported=False,
                             report_status=report_status)
+
         elif "Report Crimes" in request.form:
             report_status = db_helper.report_crime(request.form,user_id, date_)
             user_reports = db_helper.get_user_reports(user_id,date_)
@@ -55,6 +64,7 @@ def report_search_function():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
+                            prediction=prediction,
                             date_=date_,
                             reported=True,
                             report_status=report_status)
@@ -64,6 +74,7 @@ def report_search_function():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
+                            prediction=prediction,
                             date_=date_,
                             reported=False,
                             report_status=report_status,
@@ -74,6 +85,7 @@ def report_search_function():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
+                            prediction=prediction,
                             date_=date_)
     
 
@@ -90,6 +102,7 @@ def adv_querry1():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
+                            prediction=prediction,
                             date_=date_,
                             adv_querry1=adv_querry1)
         
@@ -98,6 +111,7 @@ def adv_querry1():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
+                            prediction=prediction,
                             date_=date_)
 
 @app.route('/adv_querry2', methods = ['POST', 'GET'])
@@ -113,6 +127,7 @@ def adv_querry2():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
+                            prediction=prediction,
                             date_=date_,
                             adv_querry2=adv_querry2)
         
@@ -121,6 +136,7 @@ def adv_querry2():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
+                            prediction=prediction,
                             date_=date_)
 
 
@@ -140,6 +156,7 @@ def update_username():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
+                            prediction=prediction,
                             date_=date_,
                             updated = status,
                             display=True)
@@ -149,6 +166,7 @@ def update_username():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
+                            prediction=prediction,
                             date_=date_)
 
 @app.route('/deletion', methods = ['POST', 'GET'])
@@ -167,6 +185,7 @@ def delete_reports():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
+                            prediction=prediction,
                             date_=date_,
                             deleted = status,
                             display=True)
@@ -176,4 +195,5 @@ def delete_reports():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
+                            prediction=prediction,
                             date_=date_)

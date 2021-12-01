@@ -2,6 +2,7 @@
 from datetime import date
 from app import db
 from sqlalchemy.sql import text
+import mysql.connector as mysql
 
 def fetch() -> dict:
     conn = db.connect()
@@ -49,21 +50,54 @@ def get_user_reports(user_id, date_) -> dict:
     return reports
 
 def predict_crime(request):
-    conn = db.connect()
-    pred = ""
+
+    HOST = "34.136.188.182"
+
+    # database name, if you want just to connect to MySQL server, leave it empty
+    DATABASE = ""
+
+    USER = "root"
+
+    PASSWORD = "heatedcrimes"
+
+    db_connection = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)
+    print("Connected to:", db_connection.get_server_info())
+
+    cursor = db_connection.cursor(buffered=True)
+    
     try:
+        cursor.execute("USE Crimes")
+
         location = request["location"]
         temperature = request["temperature"]
+        
+        result = cursor.callproc('Predict', [location, temperature,'', 0, '', 0])
 
-        result = conn.execute(text(f'''
-                                CALL GetPrediction("{location}", {temperature});
+    except Exception as e:
+        print("Error is: ", e)
+        return False, []
+
+    db_connection.close()
+
+    # print(result)
+    return False, result
+
+def get_trend(request):
+    try:
+        conn = db.connect()
+        flag = conn.execute(text(f'''
+                                SELECT Flag
+                                FROM Prediction
+                                WHERE Block = '{request["location"]}';
                                ''')).fetchall()
     except Exception as e:
         print("Error is: ", e)
         conn.close()
-        return False, pred, []
+        return 2
 
-    return False, pred, result
+    conn.close()
+    # print(flag[0][0])
+    return flag[0][0]
 
 def report_crime(request, id_, date_):
     try:
@@ -115,6 +149,7 @@ def get_search_result(request):
                                 FROM Official_Crimes
                                 {where_clause};
                                ''')).fetchall()
+
     except Exception as e:
         print("Error is: ", e)
         conn.close()

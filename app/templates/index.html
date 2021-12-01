@@ -127,34 +127,47 @@
       <div class="PredictionResults">
         <table>
           <h2> Prediction Result </h2>
-          {% if pred == "Likely"%}
+          {% if pred == "LIKELY"%}
  
           <p style="color:red;font-size:40px">Likely</p>
           
-          {% elif pred == "Probable" %}
+          {% elif pred == "PROBABLE" %}
           <p style="color:orange;font-size:40px">Probable</p>
           
-          {% elif pred == "Unlikely" %}
+          {% elif pred == "UNLIKELY" %}
           <p style="color:green;font-size:40px">Unlikely</p>
 
           {% else%}
           <p> </p>
           {% endif %}
 
+          {% if pred|length > 0 %}
+          <p style="color:black"> Probability: {{prediction[5]}}%</p>
+          {% else%}
+          <p> </p>
+          {% endif %}
+
+          {% if trend == 0 %}
+          <p style="color:black"> Trend: Area remains the same </p>
+          {% elif trend == 1 %}
+          <p style="color:black"> Trend: Area are seeing an increase in crimes</p>
+          {% elif trend == -1 %}
+          <p style="color:black"> Trend: Area are seeing a decrease in crimes</p>
+          {% else%}
+          <p> </p>
+          {% endif %}
+
           <tr>
-            <th>Crime-Type</th>
+            <th>Crime Type</th>
             <th>Frequency</th>
 
           </tr>
-          <tbody>
-              {% for item in prediction %}
-                  <tr>
-                      <td>{{item.Crime_Type}}</td>
-                      <td>{{item.Frequency}}</td>
-                  </tr>
-              {% endfor %}
+
+            <tr>
+                <td>{{prediction[2]}}</td>
+                <td>{{prediction[3]}}</td>
+            </tr>
               
-              </tbody>
         </table>
       </div>
       <br/>
