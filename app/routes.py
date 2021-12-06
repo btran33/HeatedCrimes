@@ -9,7 +9,7 @@ usr_name = db_helper.get_user_name(user_id)
 date_ = date.today()
 user_reports = db_helper.get_user_reports(user_id,date_)
 
-prediction = ("", "", "", "", "", "")
+predictions = ("", "", "", "", "", "")
 trend = 2
 items = []
 report = []
@@ -20,7 +20,7 @@ def homepage():
     return render_template("index.html", 
                             usr_name = usr_name, 
                             user_reports=user_reports,
-                            prediction=prediction,
+                            prediction=predictions,
                             trend = trend,
                             date_=date_)
 
@@ -31,7 +31,7 @@ def background_process():
     return render_template("index.html", 
                             usr_name= usr_name,
                             items=items,
-                            prediction=prediction, 
+                            prediction=predictions, 
                             user_reports=user_reports,
                             date_=date_)
 
@@ -64,7 +64,7 @@ def report_search_function():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
-                            prediction=prediction,
+                            prediction=predictions,
                             date_=date_,
                             reported=True,
                             report_status=report_status)
@@ -74,7 +74,7 @@ def report_search_function():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
-                            prediction=prediction,
+                            prediction=predictions,
                             date_=date_,
                             reported=False,
                             report_status=report_status,
@@ -85,7 +85,7 @@ def report_search_function():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
-                            prediction=prediction,
+                            prediction=predictions,
                             date_=date_)
     
 
@@ -102,7 +102,7 @@ def adv_querry1():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
-                            prediction=prediction,
+                            prediction=predictions,
                             date_=date_,
                             adv_querry1=adv_querry1)
         
@@ -111,7 +111,7 @@ def adv_querry1():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
-                            prediction=prediction,
+                            prediction=predictions,
                             date_=date_)
 
 @app.route('/adv_querry2', methods = ['POST', 'GET'])
@@ -127,7 +127,7 @@ def adv_querry2():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
-                            prediction=prediction,
+                            prediction=predictions,
                             date_=date_,
                             adv_querry2=adv_querry2)
         
@@ -136,7 +136,7 @@ def adv_querry2():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
-                            prediction=prediction,
+                            prediction=predictions,
                             date_=date_)
 
 
@@ -156,7 +156,7 @@ def update_username():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
-                            prediction=prediction,
+                            prediction=predictions,
                             date_=date_,
                             updated = status,
                             display=True)
@@ -166,7 +166,7 @@ def update_username():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
-                            prediction=prediction,
+                            prediction=predictions,
                             date_=date_)
 
 @app.route('/deletion', methods = ['POST', 'GET'])
@@ -185,7 +185,7 @@ def delete_reports():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
-                            prediction=prediction,
+                            prediction=predictions,
                             date_=date_,
                             deleted = status,
                             display=True)
@@ -195,5 +195,5 @@ def delete_reports():
                             usr_name= usr_name,
                             items=items, 
                             user_reports=user_reports,
-                            prediction=prediction,
+                            prediction=predictions,
                             date_=date_)
